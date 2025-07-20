@@ -15,7 +15,7 @@
 *.opendb
 *.db-wal
 
-/Intermediate
+Intermediate/
 
 # Fortran module files
 *.mod
