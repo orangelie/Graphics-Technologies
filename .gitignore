@@ -13,6 +13,7 @@
 *.ipch
 *.db
 *.opendb
+*.db-wal
 
 /Intermediate
 
