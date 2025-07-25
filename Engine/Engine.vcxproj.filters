@@ -9,12 +9,21 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="01. Rendering">
+    <Filter Include="98. ThirdParty">
+      <UniqueIdentifier>{0a0dbd44-5b08-40c0-a749-e1e2d9bebc4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Mesh">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="98. ThirdParty">
-      <UniqueIdentifier>{0a0dbd44-5b08-40c0-a749-e1e2d9bebc4f}</UniqueIdentifier>
+    <Filter Include="02. Animation">
+      <UniqueIdentifier>{05c11ab6-34d7-4241-ad97-91072f43fa48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Shader">
+      <UniqueIdentifier>{df99b4b5-6a25-4f60-a54b-0d8aa1bbef7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Shader\file">
+      <UniqueIdentifier>{6293a215-71c2-4cb4-8536-3faef4279270}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -54,6 +63,36 @@
     <ClInclude Include="..\include\Win32Builder.h">
       <Filter>00. Engine</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\Input.h">
+      <Filter>00. Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Timer.h">
+      <Filter>00. Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Camera.h">
+      <Filter>03. Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\AnimationImporter.h">
+      <Filter>02. Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\FileUtils.h">
+      <Filter>99. Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\PointerContainer.h">
+      <Filter>99. Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\ConstantBuffer.h">
+      <Filter>03. Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Material.h">
+      <Filter>03. Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Resources.h">
+      <Filter>03. Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Model.h">
+      <Filter>01. Mesh</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Global.cpp">
@@ -89,10 +128,45 @@
     <ClCompile Include="..\src\Win32Builder.cpp">
       <Filter>00. Engine</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Input.cpp">
+      <Filter>00. Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Timer.cpp">
+      <Filter>00. Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Camera.cpp">
+      <Filter>03. Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\AnimationImporter.cpp">
+      <Filter>02. Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\PointerContainer.cpp">
+      <Filter>99. Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\FileUtils.cpp">
+      <Filter>99. Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Material.cpp">
+      <Filter>03. Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Resources.cpp">
+      <Filter>03. Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ConstantBuffer.cpp">
+      <Filter>03. Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Model.cpp">
+      <Filter>01. Mesh</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\ThirdParty\include\SimpleMath.inl">
       <Filter>98. ThirdParty</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\Shaders\basic.fx">
+      <Filter>03. Shader\file</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

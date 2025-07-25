@@ -17,6 +17,8 @@ using namespace Microsoft::WRL;
 #include <array>
 #include <memory>
 #include <algorithm>
+#include <functional>
+#include <filesystem>
 
 using namespace std;
 
@@ -41,6 +43,9 @@ using namespace DirectX;
 #include "imgui.h"
 #include "imgui_impl_dx11.h"
 #include "imgui_impl_win32.h"
+
+// tinyxml2
+#include "tinyxml2.h"
 
 // Libs
 #pragma comment(lib, "d3d11.lib")
@@ -71,6 +76,8 @@ using Vec4 = DirectX::SimpleMath::Vector4;
 using Matrix = DirectX::SimpleMath::Matrix;
 using Quaternion = DirectX::SimpleMath::Quaternion;
 
+#define CHECK(p)	assert(SUCCEEDED(p))
+
 #define DECLARE_SINGLE(classname)			\
 private:									\
 	classname() { }							\
@@ -82,3 +89,26 @@ public:										\
 	}
 
 #define GET_SINGLE(classname)	(classname::GetInstance())
+
+#define TIME            GET_SINGLE(Timer)
+#define INPUT           GET_SINGLE(Input)
+#define DEVICE          PointerContainer::GetInstance()->device
+#define DC              PointerContainer::GetInstance()->dc
+#define RESOURCES       GET_SINGLE(Resources)
+
+wstring ToWString(const string& value);
+string ToString(const wstring& value);
+void Replace(OUT string& str, IN const string& comp, IN const string& rep);
+void Replace(OUT wstring& str, IN const wstring& comp, IN const wstring& rep);
+
+struct VertexType
+{
+    Vec3 position = {};
+    Vec2 uv = {};
+    Vec3 normal = {};
+    Vec3 tangent = {};
+    Vec4 blendIndices = {};
+    Vec4 blendWeights = {};
+};
+
+#include "FileUtils.h"

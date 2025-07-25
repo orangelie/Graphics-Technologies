@@ -19,7 +19,17 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\AnimationImporter.h" />
+    <ClInclude Include="..\include\Camera.h" />
+    <ClInclude Include="..\include\ConstantBuffer.h" />
+    <ClInclude Include="..\include\FileUtils.h" />
     <ClInclude Include="..\include\Global.h" />
+    <ClInclude Include="..\include\Input.h" />
+    <ClInclude Include="..\include\Material.h" />
+    <ClInclude Include="..\include\Model.h" />
+    <ClInclude Include="..\include\PointerContainer.h" />
+    <ClInclude Include="..\include\Resources.h" />
+    <ClInclude Include="..\include\Timer.h" />
     <ClInclude Include="..\include\Win32Builder.h" />
     <ClInclude Include="..\ThirdParty\include\imconfig.h" />
     <ClInclude Include="..\ThirdParty\include\imgui.h" />
@@ -33,12 +43,22 @@
     <ClInclude Include="..\ThirdParty\include\tinyxml2.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\AnimationImporter.cpp" />
+    <ClCompile Include="..\src\Camera.cpp" />
+    <ClCompile Include="..\src\ConstantBuffer.cpp" />
+    <ClCompile Include="..\src\FileUtils.cpp" />
     <ClCompile Include="..\src\Global.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="..\src\Input.cpp" />
+    <ClCompile Include="..\src\Material.cpp" />
+    <ClCompile Include="..\src\Model.cpp" />
+    <ClCompile Include="..\src\PointerContainer.cpp" />
+    <ClCompile Include="..\src\Resources.cpp" />
+    <ClCompile Include="..\src\Timer.cpp" />
     <ClCompile Include="..\src\Win32Builder.cpp" />
     <ClCompile Include="..\ThirdParty\include\imgui.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
@@ -97,6 +117,26 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\ThirdParty\include\SimpleMath.inl" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\Shaders\basic.fx">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
