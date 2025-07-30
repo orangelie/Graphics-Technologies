@@ -16,6 +16,8 @@ public:
     void SetName(const wstring& name);
     wstring GetName() const { return _name; }
 
+    void UploadTexture();
+
 public:
     void SetDiffuseMap(shared_ptr<Texture> diffuse);
     void SetSpecularMap(shared_ptr<Texture> specular);

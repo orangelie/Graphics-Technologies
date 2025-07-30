@@ -270,6 +270,9 @@ void ModelMesh::CreateBuffers(uint32 vCount, uint32 iCount)
 
     CHECK(DEVICE->CreateBuffer(&desc, &data, geometry->vertexBuffer.GetAddressOf()));
 
+    _stride = sizeof(VertexType);
+    _offset = 0;
+
     desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
     desc.ByteWidth = sizeof(uint32) * iCount;
     desc.Usage = D3D11_USAGE_IMMUTABLE;
@@ -291,12 +294,108 @@ void ModelVertexType::AddIndices(vector<uint32> indices)
 
 void Model::Start()
 {
-    const wstring filename = L"../Shaders/basic.fx";
-
     // Model
-    _rawModel = make_shared<RawModel>();
-    _rawModel->ReadModel(L"Genshin/Genshin");
-    _rawModel->ReadMaterial(L"Genshin/Genshin");
+    _model = make_shared<RawModel>();
+    /*_model->ReadModel(L"Genshin/NAVIA");
+    _model->ReadMaterial(L"Genshin/NAVIA");*/
+    _model->ReadModel(L"Kachujin/Kachujin");
+    _model->ReadMaterial(L"Kachujin/Kachujin");
+
+    CreateShader();
+
+    // Material
+    /*const auto& materials = _rawModel->GetMaterials();
+    for (auto& material : materials)
+    {
+        material->SetShader(_shader);
+    }*/
+
+    // CB
+    _transformCB = make_shared<ConstantBuffer<TransformDesc>>();
+    _transformCB->Create();
+
+    _boneCB = make_shared<ConstantBuffer<BoneDesc>>();
+    _boneCB->Create();
+
+    _scalarCB = make_shared<ConstantBuffer<ScalarDesc>>();
+    _scalarCB->Create();
+}
+
+void Model::Render()
+{
+    if (_model == nullptr)
+        return;
+
+    UpdateShader();
+
+    // Bones
+    BoneDesc boneDesc;
+
+    const uint32 boneCount = _model->GetBoneCount();
+    for (uint32 i = 0; i < boneCount; i++)
+    {
+        shared_ptr<ModelBone> bone = _model->GetBoneByIndex(i);
+        boneDesc.transforms[i] = bone->transform;
+    }
+    
+    // _boneCB->PushBoneData(boneDesc);
+    _boneCB->CopyData(boneDesc);
+    DC->VSSetConstantBuffers(1, 1, _boneCB->GetComPtr().GetAddressOf());
+
+    // Transform
+    UploadTransformData();
+
+    const auto& meshes = _model->GetMeshes();
+    for (auto& mesh : meshes)
+    {
+        if (mesh->material)
+            mesh->material->UploadTexture();
+
+        {
+            // BoneIndex
+            ScalarDesc desc = {};
+            desc.BoneIndex = mesh->boneIndex;
+            _scalarCB->CopyData(desc);
+            DC->VSSetConstantBuffers(2, 1, _scalarCB->GetComPtr().GetAddressOf());
+        }
+
+        uint32 stride = mesh->GetStride();
+        uint32 offset = mesh->GetOffset();
+
+        DC->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+        DC->IASetVertexBuffers(0, 1, mesh->geometry->vertexBuffer.GetAddressOf(), &stride, &offset);
+        DC->IASetIndexBuffer(mesh->geometry->indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+
+        DC->DrawIndexedInstanced(mesh->geometry->indices.size(), 1, 0, 0, 0);
+    }
+}
+
+void Model::UploadTransformData()
+{
+    TransformDesc desc = {};
+    {
+        Matrix S, R, T;
+        S = Matrix::CreateScale(transform.scale.x, transform.scale.y, transform.scale.z);
+        R = Matrix::CreateRotationX(transform.rotation.x);
+        R *= Matrix::CreateRotationY(transform.rotation.y);
+        R *= Matrix::CreateRotationZ(transform.rotation.z);
+        T = Matrix::CreateTranslation(transform.position.x, transform.position.y, transform.position.z);
+
+        desc.World = S * R * T;
+    }
+    {
+        Vec3 position = Vec3(0.0F, 0.0F, -50.0F); // TEMP
+        desc.View = Matrix::CreateLookAt(position, position + Vec3(0.0F, 0.0F, 0.1F), Vec3::Up);
+    }
+    desc.Projection = Matrix::CreatePerspective(WIDTH, HEIGHT, 0.1F, 1000.0F);
+
+    _transformCB->CopyData(desc);
+    DC->VSSetConstantBuffers(0, 1, _transformCB->GetComPtr().GetAddressOf());
+}
+
+void Model::CreateShader()
+{
+    const wstring filename = L"../Shaders/basic.fx";
 
     // Shader (VS)
     DWORD shaderFlags = D3DCOMPILE_ENABLE_STRICTNESS;
@@ -326,7 +425,7 @@ void Model::Start()
         assert(false);
     }
 
-    // DEVICE->CreateVertexShader();
+    CHECK(DEVICE->CreateVertexShader(_vsBlob->GetBufferPointer(), _vsBlob->GetBufferSize(), nullptr, _vsShader.GetAddressOf()));
 
     // Shader (PS)
     errorBlob.Reset();
@@ -352,15 +451,24 @@ void Model::Start()
         assert(false);
     }
 
-    // Material
-    /*const auto& materials = _rawModel->GetMaterials();
-    for (auto& material : materials)
+    CHECK(DEVICE->CreatePixelShader(_psBlob->GetBufferPointer(), _psBlob->GetBufferSize(), nullptr, _psShader.GetAddressOf()));
+
+    vector<D3D11_INPUT_ELEMENT_DESC> input =
     {
-        material->SetShader(_shader);
-    }*/
+        { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,   0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+        { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,   0, 12,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
+        { "NORMAL",    0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 20, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+        { "TANGENT", 0, DXGI_FORMAT_R32G32B32_FLOAT,   0, 32, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+        { "INDICES", 0, DXGI_FORMAT_R32G32B32A32_FLOAT,   0, 44,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
+        { "WEIGHTS",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 60, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+    };
+
+    CHECK(DEVICE->CreateInputLayout(input.data(), input.size(), _vsBlob->GetBufferPointer(), _vsBlob->GetBufferSize(), _inputLayout.GetAddressOf()));
 }
 
-void Model::Render()
+void Model::UpdateShader()
 {
-
+    DC->VSSetShader(_vsShader.Get(), nullptr, 0);
+    DC->PSSetShader(_psShader.Get(), nullptr, 0);
+    DC->IASetInputLayout(_inputLayout.Get());
 }

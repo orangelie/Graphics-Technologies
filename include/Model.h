@@ -1,5 +1,7 @@
 #pragma once
 
+#include "ConstantBuffer.h"
+
 class Material;
 
 struct ModelVertexType
@@ -29,6 +31,9 @@ struct ModelMesh
 {
     void CreateBuffers(uint32 vCount, uint32 iCount);
 
+    uint32 GetStride() const { return _stride; }
+    uint32 GetOffset() const { return _offset; }
+
     wstring name;
 
     shared_ptr<ModelVertexType> geometry = make_shared<ModelVertexType>();
@@ -38,6 +43,11 @@ struct ModelMesh
 
     int32 boneIndex;
     shared_ptr<ModelBone> bone; // Ä³½Ã
+
+private:
+    uint32 _stride = 0;
+    uint32 _offset = 0;
+
 };
 
 class RawModel : public enable_shared_from_this<RawModel>
@@ -50,10 +60,13 @@ public:
     void ReadMaterial(wstring filename);
     void ReadModel(wstring filename);
 
-private:
+public:
     shared_ptr<Material> GetMaterialByName(const wstring& name);
 
     shared_ptr<ModelBone> GetBoneByIndex(uint32 index);
+
+    vector<shared_ptr<ModelMesh>> GetMeshes() { return _meshes; }
+    uint32 GetBoneCount() { return static_cast<uint32>(_bones.size()); }
 
 private:
     void BindCacheInfo();
@@ -70,16 +83,66 @@ private:
 
 };
 
+// CB0
+struct Transform
+{
+    Vec3 position;
+    Vec3 rotation;
+    Vec3 scale;
+};
+
+struct TransformDesc
+{
+    Matrix World;
+    Matrix View;
+    Matrix Projection;
+};
+
+// CB1
+#define MAX_MODEL_TRANSFORMS 250
+// #define MAX_MODEL_KEYFRAMES 500
+
+// CB2
+struct BoneDesc
+{
+    Matrix transforms[MAX_MODEL_TRANSFORMS];
+};
+
+// CB2
+struct ScalarDesc
+{
+    int BoneIndex;
+    float padding[3];
+};
+
 class Model
 {
 public:
     void Start();
     void Render();
 
+    Transform transform;
+
 private:
-    shared_ptr<RawModel> _rawModel = nullptr;
+    void UploadTransformData();
+
+    // TEST
+    void CreateShader();
+    void UpdateShader();
+
+private:
+    shared_ptr<RawModel> _model = nullptr;
 
     ComPtr<ID3DBlob> _vsBlob = nullptr;
     ComPtr<ID3DBlob> _psBlob = nullptr;
+
+    ComPtr<ID3D11InputLayout> _inputLayout = nullptr;
+    ComPtr<ID3D11VertexShader> _vsShader = nullptr;
+    ComPtr<ID3D11PixelShader> _psShader = nullptr;
+
+private:
+    shared_ptr<ConstantBuffer<TransformDesc>> _transformCB = nullptr;
+    shared_ptr<ConstantBuffer<BoneDesc>> _boneCB = nullptr;
+    shared_ptr<ConstantBuffer<ScalarDesc>> _scalarCB = nullptr;
     
 };

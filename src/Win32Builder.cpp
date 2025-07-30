@@ -2,6 +2,7 @@
 #include "Win32Builder.h"
 #include "Timer.h"
 #include "Input.h"
+#include "PointerContainer.h"
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -48,7 +49,13 @@ void Win32Builder::Create(HINSTANCE hInst, const wstring& title, int width, int 
     _start = start;
     _update = update;
 
-    _start(_hWnd, rc.right - rc.left, rc.bottom - rc.top);
+    uint32 real_width = static_cast<uint32>(rc.right - rc.left);
+    uint32 real_height = static_cast<uint32>(rc.bottom - rc.top);
+
+    GET_SINGLE(PointerContainer)->width = real_width;
+    GET_SINGLE(PointerContainer)->height = real_height;
+
+    _start(_hWnd, real_width, real_height);
 }
 
 void Win32Builder::Run()

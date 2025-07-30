@@ -1,9 +1,17 @@
 #include "Global.h"
 #include "Material.h"
+#include "PointerContainer.h"
+#include "Resources.h"
 
 void Material::SetName(const wstring& name)
 {
     _name = name;
+}
+
+void Material::UploadTexture()
+{
+    if (_diffuse)
+        DC->PSSetShaderResources(0, 1, _diffuse->srv.GetAddressOf());
 }
 
 void Material::SetDiffuseMap(shared_ptr<Texture> diffuse)

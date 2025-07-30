@@ -95,6 +95,8 @@ public:										\
 #define DEVICE          PointerContainer::GetInstance()->device
 #define DC              PointerContainer::GetInstance()->dc
 #define RESOURCES       GET_SINGLE(Resources)
+#define WIDTH           PointerContainer::GetInstance()->width
+#define HEIGHT          PointerContainer::GetInstance()->height  
 
 wstring ToWString(const string& value);
 string ToString(const wstring& value);

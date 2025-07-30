@@ -26,13 +26,23 @@ void ForwardLightingDemo::Start()
     // Create Meshes
     {
         AnimationImporter ai;
-        ai.ReadAssetFile(L"Genshin/navia.fbx");
+        /*ai.ReadAssetFile(L"Genshin/navia.fbx");
         ai.ExportModelData(L"Genshin/NAVIA");
-        ai.ExportMaterialData(L"Genshin/NAVIA");
+        ai.ExportMaterialData(L"Genshin/NAVIA");*/
 
         /*ai.ReadAssetFile(L"S/S.fbx");
         ai.ExportModelData(L"S/S");
         ai.ExportMaterialData(L"S/S");*/
+
+        ai.ReadAssetFile(L"Kachujin/Mesh.fbx");
+        ai.ExportModelData(L"Kachujin/Kachujin");
+        ai.ExportMaterialData(L"Kachujin/Kachujin");
+
+        _model = make_shared<Model>();
+        _model->Start();
+        _model->transform.scale = { 0.01F, 0.01F, 0.01F };
+        _model->transform.rotation = { 0.0F, 0.0F, 0.0F };
+        _model->transform.position = { 0.0F, 0.0F, 0.0F };
     }
 }
 
@@ -52,7 +62,7 @@ void ForwardLightingDemo::Render()
     _dc->RSSetViewports(1, &_viewport);
 
     {
-
+        _model->Render();
     }
 
     _swapChain->Present(1, 0);

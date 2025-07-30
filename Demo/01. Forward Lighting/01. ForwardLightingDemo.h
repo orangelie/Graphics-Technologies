@@ -29,5 +29,8 @@ private:
 
     D3D11_VIEWPORT _viewport = {};
 
+private:
+    shared_ptr<Model> _model = nullptr;
+
 };
 
