@@ -329,7 +329,7 @@ void Model::Render()
     UpdateShader();
 
     // Bones
-    BoneDesc boneDesc;
+    BoneDesc boneDesc = {};
 
     const uint32 boneCount = _model->GetBoneCount();
     for (uint32 i = 0; i < boneCount; i++)

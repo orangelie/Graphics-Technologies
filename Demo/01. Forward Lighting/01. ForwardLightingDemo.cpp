@@ -40,9 +40,9 @@ void ForwardLightingDemo::Start()
 
         _model = make_shared<Model>();
         _model->Start();
-        _model->transform.scale = { 0.01F, 0.01F, 0.01F };
+        _model->transform.scale = { 0.1F, 0.1F, 0.1F };
         _model->transform.rotation = { 0.0F, 0.0F, 0.0F };
-        _model->transform.position = { 0.0F, 0.0F, 0.0F };
+        _model->transform.position = { 0.0F, 0.0F, 50.0F };
     }
 }
 

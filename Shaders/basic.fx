@@ -60,5 +60,6 @@ VertexOut VS(VertexIn vin)
 
 float4 PS(VertexOut pin) : SV_TARGET
 {
-    return DiffuseMap.Sample(Sampler, pin.uv);
+    // return DiffuseMap.Sample(Sampler, pin.uv);
+    return float4(1.0F, 0.0F, 0.0F, 1.0F);
 }
