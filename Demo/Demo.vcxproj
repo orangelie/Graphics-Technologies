@@ -171,13 +171,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="00. Base.h" />
+    <ClInclude Include="00. Empty\00. EmptyDemo.h" />
     <ClInclude Include="01. Forward Lighting\01. ForwardLightingDemo.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="00. Base.cpp" />
+    <ClCompile Include="00. Empty\00. EmptyDemo.cpp" />
     <ClCompile Include="01. Forward Lighting\01. ForwardLightingDemo.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="pch.cpp">

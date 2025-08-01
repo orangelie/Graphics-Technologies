@@ -8,6 +8,10 @@
 #include <windowsx.h>
 #include <wrl.h>
 
+#include <dinput.h>
+#pragma comment(lib, "dinput8")
+#pragma comment(lib, "dxguid")
+
 using namespace Microsoft::WRL;
 
 #include <iostream>
@@ -97,6 +101,7 @@ public:										\
 #define RESOURCES       GET_SINGLE(Resources)
 #define WIDTH           PointerContainer::GetInstance()->width
 #define HEIGHT          PointerContainer::GetInstance()->height  
+#define CAMERA          GET_SINGLE(Camera)
 
 wstring ToWString(const string& value);
 string ToString(const wstring& value);

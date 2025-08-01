@@ -25,7 +25,7 @@ public:
 
     MaterialDesc& GetMaterialDesc() { return _mat; }
 
-private:
+public:
     wstring _name;
 
     shared_ptr<Texture> _diffuse = nullptr;

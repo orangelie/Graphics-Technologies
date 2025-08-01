@@ -93,6 +93,9 @@
     <ClInclude Include="..\include\Model.h">
       <Filter>01. Mesh</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\Base.h">
+      <Filter>00. Engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Global.cpp">
@@ -158,6 +161,9 @@
     <ClCompile Include="..\src\Model.cpp">
       <Filter>01. Mesh</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Base.cpp">
+      <Filter>00. Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\ThirdParty\include\SimpleMath.inl">
@@ -165,7 +171,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="..\Shaders\basic.fx">
+    <FxCompile Include="..\Shaders\00. Empty\00. Empty.fx">
+      <Filter>03. Shader\file</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Shaders\Global.fx">
       <Filter>03. Shader\file</Filter>
     </FxCompile>
   </ItemGroup>

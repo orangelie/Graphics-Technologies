@@ -88,7 +88,7 @@ struct Transform
 {
     Vec3 position;
     Vec3 rotation;
-    Vec3 scale;
+    Vec3 scale = { 1.0F, 1.0F, 1.0F };
 };
 
 struct TransformDesc
@@ -99,8 +99,7 @@ struct TransformDesc
 };
 
 // CB1
-#define MAX_MODEL_TRANSFORMS 250
-// #define MAX_MODEL_KEYFRAMES 500
+#define MAX_MODEL_TRANSFORMS 700
 
 // CB2
 struct BoneDesc
@@ -118,7 +117,7 @@ struct ScalarDesc
 class Model
 {
 public:
-    void Start();
+    void Load(const wstring& shaderFilename, const wstring& modelName, const wstring& materialName);
     void Render();
 
     Transform transform;
@@ -127,7 +126,7 @@ private:
     void UploadTransformData();
 
     // TEST
-    void CreateShader();
+    void CreateShader(const wstring& filename);
     void UpdateShader();
 
 private:

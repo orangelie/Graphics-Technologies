@@ -75,12 +75,12 @@ void AnimationImporter::ReadMeshData(aiNode* node, int32 bone)
     if (node->mNumMeshes < 1)
         return;
 
-    shared_ptr<asMesh> mesh = make_shared<asMesh>();
-    mesh->name = node->mName.C_Str();
-    mesh->boneIndex = bone;
-
     for (uint32 i = 0; i < node->mNumMeshes; ++i)
     {
+        shared_ptr<asMesh> mesh = make_shared<asMesh>();
+        mesh->name = node->mName.C_Str();
+        mesh->boneIndex = bone;
+
         uint32 index = node->mMeshes[i];
         const aiMesh* srcMesh = _scene->mMeshes[index];
 
@@ -116,9 +116,9 @@ void AnimationImporter::ReadMeshData(aiNode* node, int32 bone)
                 mesh->indices.push_back(face.mIndices[k] + startVertex);
             }
         }
-    }
 
-    _meshes.push_back(mesh);
+        _meshes.push_back(mesh);
+    }
 }
 
 void AnimationImporter::WriteModelFile(const wstring& finalPath)
@@ -190,9 +190,6 @@ void AnimationImporter::ReadMaterialData()
         material->normalFile = file.C_Str();
 
         _materials.push_back(material);
-
-        /*cout << material->diffuseFile << endl;
-        printf("[%d] diffuse: (%f, %f, %f)\n", i, material->diffuse.x, material->diffuse.y, material->diffuse.z);*/
     }
 }
 
@@ -320,5 +317,5 @@ string AnimationImporter::WriteTexture(const string& saveFolder, const string& f
         ::CopyFileA(originStr.c_str(), pathStr.c_str(), false);
     }
 
-    return string();
+    return fileName;
 }

@@ -3,12 +3,26 @@
 
 void Input::Init(HWND hwnd)
 {
+    // 키보드
 	_hwnd = hwnd;
 	_states.resize(KEY_TYPE_COUNT, KEY_STATE::NONE);
+
+    // 마우스
+    HINSTANCE hInst = GetModuleHandle(0);
+
+    DirectInput8Create(hInst, DIRECTINPUT_VERSION, IID_IDirectInput8, (LPVOID*)&_directInput, 0);
+    _directInput->CreateDevice(GUID_SysMouse, &_mouseDevice, 0);
+
+    _mouseDevice->SetCooperativeLevel(_hwnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE);
+    _mouseDevice->SetDataFormat(&c_dfDIMouse);
+    _mouseDevice->Acquire();
+
+    _states.resize(KEY_TYPE_COUNT, KEY_STATE::NONE);
 }
 
 void Input::Update()
 {
+    // 키보드
 	HWND hwnd = ::GetActiveWindow();
 	if (_hwnd != hwnd)
 	{
@@ -49,4 +63,16 @@ void Input::Update()
 
 	::GetCursorPos(&_mousePos);
 	::ScreenToClient(_hwnd, &_mousePos);
+
+    // 마우스
+    HRESULT result = _mouseDevice->GetDeviceState(sizeof(DIMOUSESTATE), &_diMouseState);
+    if (FAILED(result)) {
+        if (result == DIERR_INPUTLOST || result == DIERR_NOTACQUIRED) {
+            _mouseDevice->Acquire();
+        }
+        else {
+            exit(-1);
+            return;
+        }
+    }
 }

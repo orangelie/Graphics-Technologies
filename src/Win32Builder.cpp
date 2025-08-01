@@ -2,6 +2,7 @@
 #include "Win32Builder.h"
 #include "Timer.h"
 #include "Input.h"
+#include "Base.h"
 #include "PointerContainer.h"
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -107,9 +108,11 @@ LRESULT CALLBACK Win32Builder::WndProc(HWND hWnd, UINT message, WPARAM wParam, L
     case WM_SIZE:
         if (wParam != SIZE_MINIMIZED)
         {
-            
+            if (GET_SINGLE(PointerContainer)->application)
+            {
+                GET_SINGLE(PointerContainer)->application->Resize(LOWORD(lParam), HIWORD(lParam));
+            }
         }
-
         break;
     case WM_DESTROY:
         PostQuitMessage(0);

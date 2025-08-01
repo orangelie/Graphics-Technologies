@@ -32,4 +32,6 @@ shared_ptr<Texture> Resources::GetOrAddTexture(const wstring& name, const wstrin
     texture->height = md.height;
 
     _textures[name] = texture;
+
+    return texture;
 }

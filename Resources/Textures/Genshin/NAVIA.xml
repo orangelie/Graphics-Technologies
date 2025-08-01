@@ -2,9 +2,9 @@
 <Materials>
     <Material>
         <Name>舌头</Name>
-        <DiffuseFile></DiffuseFile>
-        <SpecularFile></SpecularFile>
-        <NormalFile></NormalFile>
+        <DiffuseFile>Face.png</DiffuseFile>
+        <SpecularFile>Face.png</SpecularFile>
+        <NormalFile>Face.png</NormalFile>
         <Ambient R="0" G="0" B="0" A="1"/>
         <Diffuse R="0.80000001" G="0.80000001" B="0.80000001" A="1"/>
         <Specular R="0.80000001" G="0.80000001" B="0.80000001" A="100"/>
@@ -12,9 +12,9 @@
     </Material>
     <Material>
         <Name>配饰A</Name>
-        <DiffuseFile></DiffuseFile>
-        <SpecularFile></SpecularFile>
-        <NormalFile></NormalFile>
+        <DiffuseFile>Hair.png</DiffuseFile>
+        <SpecularFile>Hair.png</SpecularFile>
+        <NormalFile>Hair.png</NormalFile>
         <Ambient R="0" G="0" B="0" A="1"/>
         <Diffuse R="0.80000001" G="0.80000001" B="0.80000001" A="1"/>
         <Specular R="0.80000001" G="0.80000001" B="0.80000001" A="100"/>
@@ -22,9 +22,9 @@
     </Material>
     <Material>
         <Name>裙前</Name>
-        <DiffuseFile></DiffuseFile>
-        <SpecularFile></SpecularFile>
-        <NormalFile></NormalFile>
+        <DiffuseFile>Cloth.png</DiffuseFile>
+        <SpecularFile>Cloth.png</SpecularFile>
+        <NormalFile>Cloth.png</NormalFile>
         <Ambient R="0" G="0" B="0" A="1"/>
         <Diffuse R="0.80000001" G="0.80000001" B="0.80000001" A="1"/>
         <Specular R="0.80000001" G="0.80000001" B="0.80000001" A="100"/>
@@ -32,9 +32,9 @@
     </Material>
     <Material>
         <Name>网纱</Name>
-        <DiffuseFile></DiffuseFile>
-        <SpecularFile></SpecularFile>
-        <NormalFile></NormalFile>
+        <DiffuseFile>Cloth_Alpha.png</DiffuseFile>
+        <SpecularFile>Cloth_Alpha.png</SpecularFile>
+        <NormalFile>Cloth_Alpha.png</NormalFile>
         <Ambient R="0" G="0" B="0" A="1"/>
         <Diffuse R="0.80000001" G="0.80000001" B="0.80000001" A="1"/>
         <Specular R="0.80000001" G="0.80000001" B="0.80000001" A="100"/>

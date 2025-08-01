@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Materials>
+    <Material>
+        <Name>Monster_Eremite_Female_Slim_PushDagger_Water_Body_Mat</Name>
+        <DiffuseFile>Monster_Eremite_Female_Slim_PushDagger_Water_Tex_Diffuse.png</DiffuseFile>
+        <SpecularFile>Monster_Eremite_Female_Slim_PushDagger_Water_Tex_Diffuse.png</SpecularFile>
+        <NormalFile>Monster_Eremite_Female_Slim_PushDagger_Water_Tex_Diffuse.png</NormalFile>
+        <Ambient R="0" G="0" B="0" A="1"/>
+        <Diffuse R="1" G="1" B="1" A="1"/>
+        <Specular R="1" G="1" B="1" A="25"/>
+        <Emissive R="0" G="0" B="0" A="1"/>
+    </Material>
+    <Material>
+        <Name>Monster_Eremite_Female_Slim_PushDagger_Water_Dress_Mat</Name>
+        <DiffuseFile>Monster_Eremite_Female_Slim_PushDagger_Water_Tex_Diffuse.png</DiffuseFile>
+        <SpecularFile>Monster_Eremite_Female_Slim_PushDagger_Water_Tex_Diffuse.png</SpecularFile>
+        <NormalFile>Monster_Eremite_Female_Slim_PushDagger_Water_Tex_Diffuse.png</NormalFile>
+        <Ambient R="0" G="0" B="0" A="1"/>
+        <Diffuse R="1" G="1" B="1" A="1"/>
+        <Specular R="1" G="1" B="1" A="25"/>
+        <Emissive R="0" G="0" B="0" A="1"/>
+    </Material>
+</Materials>

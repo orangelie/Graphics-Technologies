@@ -1,7 +1,9 @@
-#include "Global.h"
+ï»¿#include "Global.h"
 #include "Model.h"
 #include "Material.h"
 #include "Resources.h"
+#include "Camera.h"
+#include "Input.h"
 #include "PointerContainer.h"
 
 RawModel::RawModel()
@@ -156,7 +158,7 @@ void RawModel::ReadModel(wstring filename)
     // Mesh
     {
         const uint32 count = file->Read<uint32>();
-
+        
         for (uint32 i = 0; i < count; i++)
         {
             shared_ptr<ModelMesh> mesh = make_shared<ModelMesh>();
@@ -201,7 +203,7 @@ void RawModel::ReadModel(wstring filename)
 
 shared_ptr<Material> RawModel::GetMaterialByName(const wstring& name)
 {
-    for (auto& material : _materials)
+    for (auto material : _materials)
     {
         if (material->GetName() == name)
             return material;
@@ -217,27 +219,27 @@ shared_ptr<ModelBone> RawModel::GetBoneByIndex(uint32 index)
 
 void RawModel::BindCacheInfo()
 {
-    // Mesh¿¡ Material Ä³½Ì
+    // Meshì— Material ìºì‹±
     for (const auto& mesh : _meshes)
     {
-        // ÀÌ¹Ì Ã£¾ÒÀ¸¸é ½ºÅµ
+        // ì´ë¯¸ ì°¾ì•˜ìœ¼ë©´ ìŠ¤í‚µ
         if (mesh->material != nullptr)
             continue;
 
         mesh->material = GetMaterialByName(mesh->materialName);
     }
 
-    // Mesh¿¡ Bone Ä³½Ì
+    // Meshì— Bone ìºì‹±
     for (const auto& mesh : _meshes)
     {
-        // ÀÌ¹Ì Ã£¾ÒÀ¸¸é ½ºÅµ
+        // ì´ë¯¸ ì°¾ì•˜ìœ¼ë©´ ìŠ¤í‚µ
         if (mesh->bone != nullptr)
             continue;
 
         mesh->bone = GetBoneByIndex(mesh->boneIndex);
     }
 
-    // Bone °èÃþ Á¤º¸ Ã¤¿ì±â
+    // Bone ê³„ì¸µ ì •ë³´ ì±„ìš°ê¸°
     if (_root == nullptr && _bones.size() > 0)
     {
         _root = _bones[0];
@@ -292,23 +294,14 @@ void ModelVertexType::AddIndices(vector<uint32> indices)
     this->indices.insert(this->indices.end(), indices.begin(), indices.end());
 }
 
-void Model::Start()
+void Model::Load(const wstring& shaderFilename, const wstring& modelName, const wstring& materialName)
 {
     // Model
     _model = make_shared<RawModel>();
-    /*_model->ReadModel(L"Genshin/NAVIA");
-    _model->ReadMaterial(L"Genshin/NAVIA");*/
-    _model->ReadModel(L"Kachujin/Kachujin");
-    _model->ReadMaterial(L"Kachujin/Kachujin");
+    _model->ReadModel(modelName);
+    _model->ReadMaterial(materialName);
 
-    CreateShader();
-
-    // Material
-    /*const auto& materials = _rawModel->GetMaterials();
-    for (auto& material : materials)
-    {
-        material->SetShader(_shader);
-    }*/
+    CreateShader(shaderFilename);
 
     // CB
     _transformCB = make_shared<ConstantBuffer<TransformDesc>>();
@@ -331,14 +324,13 @@ void Model::Render()
     // Bones
     BoneDesc boneDesc = {};
 
-    const uint32 boneCount = _model->GetBoneCount();
+    auto boneCount = _model->GetBoneCount();
     for (uint32 i = 0; i < boneCount; i++)
     {
         shared_ptr<ModelBone> bone = _model->GetBoneByIndex(i);
         boneDesc.transforms[i] = bone->transform;
     }
     
-    // _boneCB->PushBoneData(boneDesc);
     _boneCB->CopyData(boneDesc);
     DC->VSSetConstantBuffers(1, 1, _boneCB->GetComPtr().GetAddressOf());
 
@@ -374,29 +366,35 @@ void Model::UploadTransformData()
 {
     TransformDesc desc = {};
     {
-        Matrix S, R, T;
-        S = Matrix::CreateScale(transform.scale.x, transform.scale.y, transform.scale.z);
-        R = Matrix::CreateRotationX(transform.rotation.x);
+        Matrix S = Matrix::CreateScale(transform.scale);
+        Matrix R = Matrix::CreateRotationX(transform.rotation.x);
         R *= Matrix::CreateRotationY(transform.rotation.y);
         R *= Matrix::CreateRotationZ(transform.rotation.z);
-        T = Matrix::CreateTranslation(transform.position.x, transform.position.y, transform.position.z);
+        Matrix T = Matrix::CreateTranslation(transform.position);
 
         desc.World = S * R * T;
     }
     {
-        Vec3 position = Vec3(0.0F, 0.0F, -50.0F); // TEMP
-        desc.View = Matrix::CreateLookAt(position, position + Vec3(0.0F, 0.0F, 0.1F), Vec3::Up);
+        Quaternion qPitch = Quaternion::CreateFromAxisAngle(Vec3::Right, CAMERA->transform.rotation.y); // y
+        Quaternion qYaw = Quaternion::CreateFromAxisAngle(Vec3::Up, CAMERA->transform.rotation.x); // x
+
+        Quaternion rotation = qPitch * qYaw;
+
+        // ë·° í–‰ë ¬ ë§Œë“¤ê¸°
+        Matrix rotationMatrix = Matrix::CreateFromQuaternion(rotation);
+        Vec3 target = Vec3::Transform(Vec3::Forward, rotationMatrix);
+        desc.View = Matrix::CreateLookAt(CAMERA->transform.position, CAMERA->transform.position + target, Vec3::Up);
     }
-    desc.Projection = Matrix::CreatePerspective(WIDTH, HEIGHT, 0.1F, 1000.0F);
+
+    float aspect = static_cast<float>(WIDTH) / static_cast<float>(HEIGHT);
+    desc.Projection = XMMatrixPerspectiveFovLH(XM_PIDIV4, aspect, 0.1F, 1000.0F);
 
     _transformCB->CopyData(desc);
     DC->VSSetConstantBuffers(0, 1, _transformCB->GetComPtr().GetAddressOf());
 }
 
-void Model::CreateShader()
+void Model::CreateShader(const wstring& filename)
 {
-    const wstring filename = L"../Shaders/basic.fx";
-
     // Shader (VS)
     DWORD shaderFlags = D3DCOMPILE_ENABLE_STRICTNESS;
 #if defined(_DEBUG)

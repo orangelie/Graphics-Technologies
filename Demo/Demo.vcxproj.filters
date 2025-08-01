@@ -14,13 +14,13 @@
     <ClInclude Include="Main.h">
       <Filter>99. Utils</Filter>
     </ClInclude>
-    <ClInclude Include="00. Base.h">
-      <Filter>00. Demo</Filter>
-    </ClInclude>
     <ClInclude Include="pch.h">
       <Filter>99. Utils</Filter>
     </ClInclude>
     <ClInclude Include="01. Forward Lighting\01. ForwardLightingDemo.h">
+      <Filter>00. Demo</Filter>
+    </ClInclude>
+    <ClInclude Include="00. Empty\00. EmptyDemo.h">
       <Filter>00. Demo</Filter>
     </ClInclude>
   </ItemGroup>
@@ -28,13 +28,13 @@
     <ClCompile Include="Main.cpp">
       <Filter>99. Utils</Filter>
     </ClCompile>
-    <ClCompile Include="00. Base.cpp">
-      <Filter>00. Demo</Filter>
-    </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>99. Utils</Filter>
     </ClCompile>
     <ClCompile Include="01. Forward Lighting\01. ForwardLightingDemo.cpp">
+      <Filter>00. Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="00. Empty\00. EmptyDemo.cpp">
       <Filter>00. Demo</Filter>
     </ClCompile>
   </ItemGroup>

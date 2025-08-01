@@ -17,6 +17,8 @@ enum class KEY_TYPE
 	Z = 'Z',
 	C = 'C',
 
+    K = 'K',
+
     KEY_1 = '1',
     KEY_2 = '2',
     KEY_3 = '3',
@@ -63,13 +65,23 @@ public:
 	bool GetButtonUp(KEY_TYPE key) { return GetState(key) == KEY_STATE::UP; }
 	
 	const POINT& GetMousePos() { return _mousePos; }
+    Vec2 GetMouseDelta() { return Vec2((float)_diMouseState.lX, (float)_diMouseState.lY); }
 
 private:
 	inline KEY_STATE GetState(KEY_TYPE key) { return _states[static_cast<uint8>(key)]; }
 
 private:
 	HWND _hwnd;
+
 	vector<KEY_STATE> _states;
 	POINT _mousePos = {};
+
+
+    IDirectInput8* _directInput = nullptr;
+    IDirectInputDevice8* _mouseDevice = nullptr;
+    IDirectInputDevice8* _keyboardDevice = nullptr;
+
+    DIMOUSESTATE _diMouseState = {};
+
 };
 

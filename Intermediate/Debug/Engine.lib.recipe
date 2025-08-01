@@ -3,7 +3,10 @@
   <ProjectOutputs />
   <ContentFiles>
     <ContentFile>
-      <FullPath>C:\Users\Sang Wo Park\Desktop\Github\Graphics-Technologies\Build\basic.cso</FullPath>
+      <FullPath>C:\Users\Sang Wo Park\Desktop\Github\Graphics-Technologies\Build\00. Empty.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\Sang Wo Park\Desktop\Github\Graphics-Technologies\Build\Global.cso</FullPath>
     </ContentFile>
   </ContentFiles>
   <SatelliteDlls />
